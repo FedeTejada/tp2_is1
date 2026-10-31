@@ -1,2 +1,12 @@
-*.lock
+#Python
+__pychache__/
+
+#Virtual enviroments
+.venv/
+#IDE
+.idea/
+
+# Temporaly UML files
+*.asta.lock
+
 
