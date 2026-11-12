@@ -16,9 +16,10 @@ def create_app(enviroment='development'):
     db.init_app(app)
 
     #Routes
-    @app.route('/')
-    def index():
-        return "Hola"
+    from .routes.users import user_bp
+
+    app.register_blueprint(user_bp)
+
     return app
 
 
