@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+
+{% extends "base.html" %}
+
+{% block title %}Perfil de {{ user.username }}{% endblock %}
+
+{% block content %}
+
+<section class="users-section">
+
+    <div class="user-card">
+        <div class="user-avatar">
+            {{ user.name[0]|upper }}{{ user.lastname[0]|upper }}
+        </div>
+
+        <div class="user-info">
+            <h3>{{ user.name }} {{ user.lastname }}</h3>
+            <span class="username">@{{ user.username }}</span>
+            <p>{{ user.email }}</p>
+        </div>
+    </div>
+
+    <a href="{{ url_for('users.index') }}" class="profile-link">
+        ← Volver a usuarios
+    </a>
+
+</section>
+
+{% endblock %}
