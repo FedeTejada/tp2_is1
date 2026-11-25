@@ -1,0 +1,61 @@
+
+{% extends "base.html" %}
+
+{% block title %}Usuarios | Question & Answer{% endblock %}
+
+{% block content %}
+
+<section class="users-section">
+
+    <div class="page-heading">
+        <div>
+            <h1>Comunidad</h1>
+            <p>Conocé a los miembros de nuestra comunidad.</p>
+        </div>
+
+        <span class="users-count">
+            {{ users|length }} usuarios
+        </span>
+    </div>
+
+    {% if users %}
+
+        <div class="users-grid">
+
+            {% for user in users %}
+
+                <article class="user-card">
+
+                    <div class="user-avatar">
+                        {{ user.name[0]|upper }}{{ user.lastname[0]|upper }}
+                    </div>
+
+                    <div class="user-info">
+                        <h3>{{ user.name }} {{ user.lastname }}</h3>
+                        <span class="username">@{{ user.username }}</span>
+                        <p>{{ user.email }}</p>
+                    </div>
+
+                    <a href="{{ url_for('users.show_user', id=user.id) }}" class="profile-link">
+                        Ver perfil →
+                    </a>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            <div class="empty-icon">♧</div>
+            <h2>Todavía no hay usuarios</h2>
+            <p>Cuando se registren nuevos miembros aparecerán aquí.</p>
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

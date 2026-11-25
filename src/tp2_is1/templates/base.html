@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Question & Answer{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/main.css') }}">
+
+    {% block styles %}{% endblock %}
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="brand">
+                <span class="brand-icon">Q</span>
+                <span>Question<span class="brand-highlight">&</span>Answer</span>
+            </a>
+
+            <span class="navbar-tagline">
+                Una comunidad para aprender
+            </span>
+        </div>
+    </header>
+
+    <main class="main-container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>Question & Answer · TP Integrador</p>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+
