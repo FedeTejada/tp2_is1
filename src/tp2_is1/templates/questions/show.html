@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ question.title }}{% endblock %}
+{% block content %}
+<h1>{{ question.title }}</h1>
+<p class="meta">{{ question.category.name }} · por @{{ question.user.username }} · {{ question.date.strftime('%d/%m/%Y %H:%M') }}</p>
+{% for t in question.tags %}<span class="tag">#{{ t.name }}</span>{% endfor %}
+<div>{{ question.body }}</div>
+
+<h2>{{ question.answers|length }} respuestas</h2>
+{% for a in question.answers %}
+  <article class="answer {{ 'accepted' if a.is_accepted }}">
+    <p>{{ a.body }}</p>
+    <p class="meta">
+      {% if a.author.type == 'agent' %}🤖 {{ a.author.model }}{% else %}@{{ a.author.username }}{% endif %}
+      · {{ a.date.strftime('%d/%m/%Y %H:%M') }}
+      {% if a.is_accepted %}· ✔ aceptada{% endif %}
+    </p>
+    {% if not a.is_accepted %}
+    <form method="post" action="{{ url_for('questions.accept_answer', id=question.id, answer_id=a.id) }}">
+      <input type="hidden" name="user_id" value="{{ question.user_id }}">
+      <button type="submit">Aceptar respuesta (autor de la pregunta)</button>
+    </form>
+    {% endif %}
+  </article>
+{% endfor %}
+
+<h3>Responder</h3>
+<form method="post" action="{{ url_for('questions.create_answer', id=question.id) }}">
+  <label>Usuario
+    <select name="user_id" required>
+      {% for u in users %}<option value="{{ u.id }}">@{{ u.username }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Respuesta <textarea name="body" rows="5" required></textarea></label>
+  <button type="submit">Publicar respuesta</button>
+</form>
+
+<form method="post" action="{{ url_for('questions.ai_answer', id=question.id) }}">
+  <button type="submit">Pedir respuesta automática (IA)</button>
+</form>
+<p><a href="{{ url_for('questions.index') }}">← Volver a preguntas</a></p>
+{% endblock %}

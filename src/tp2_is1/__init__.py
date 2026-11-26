@@ -1,6 +1,6 @@
 import os
-from config import config
-from extensions import db
+from tp2_is1.config import config
+from tp2_is1.extensions import db
 from flask import Flask
 
 def create_app(enviroment='development'):
@@ -15,11 +15,17 @@ def create_app(enviroment='development'):
     print(app.config.get("SQLALCHEMY_DATABASE_URI"))
     db.init_app(app)
 
+    from tp2_is1 import models  # noqa: F401  (registra los modelos en el metadata)
+    with app.app_context():
+        db.create_all()  # provisorio hasta tener migraciones Alembic
+
     #Routes
     from .routes.users import user_bp
     from .routes.auth import auth_bp
+    from .routes.questions import question_bp
     app.register_blueprint(user_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(question_bp)
 
     return app
 

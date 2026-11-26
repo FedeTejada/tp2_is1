@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Nueva pregunta{% endblock %}
+{% block content %}
+<h1>Nueva pregunta</h1>
+<form method="post" action="{{ url_for('questions.create_question') }}">
+  <label>Usuario
+    <select name="user_id" required>
+      {% for u in users %}<option value="{{ u.id }}">@{{ u.username }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Título <input type="text" name="title" maxlength="200" required></label>
+  <label>Categoría
+    <select name="category_id" required>
+      {% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Detalle <textarea name="body" rows="8" required></textarea></label>
+  <label>Etiquetas (separadas por coma; usá ia-help para respuesta automática)
+    <input type="text" name="tags">
+  </label>
+  <button type="submit">Publicar</button>
+</form>
+{% endblock %}

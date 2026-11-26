@@ -19,17 +19,10 @@
         </div>
     </div>
 
-    <div class="user-actions">
-        <a href="{{ url_for('users.edit_user', id=user.id) }}" class="btn btn-primary">
-            Editar usuario
-        </a>
-        <button type="button" id="delete-user-btn" data-user-id="{{ user.id }}" class="btn btn-danger">
-            Eliminar usuario
-        </button>
-        <a href="{{ url_for('users.index') }}" class="btn btn-secondary">
-        Volver atrás
-        </a>
-    </div>
+    <a href="{{ url_for('users.index') }}" class="profile-link">
+        ← Volver a usuarios
+    </a>
+
 </section>
 
 {% endblock %}
