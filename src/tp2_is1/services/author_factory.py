@@ -1,5 +1,5 @@
 from tp2_is1.extensions import db
-from tp2_is1.models.agentAI import AgentAI
+from tp2_is1.models.agent_ai import Agent_AI
 from tp2_is1.models.user import User
 
 
@@ -11,14 +11,15 @@ class AuthorFactory:
         if kind == 'user':
             return User(**kwargs)
         if kind == 'agent':
-            return AgentAI(**kwargs)
+            return Agent_AI(**kwargs)
         raise ValueError(f"Tipo de autor desconocido: {kind}")
 
     @staticmethod
-    def get_or_create_agent(model: str) -> AgentAI:
-        agent = db.session.scalar(db.select(AgentAI).where(AgentAI.model == model))
+    def get_or_create_agent(model: str) -> Agent_AI:
+        agent = db.session.scalar(db.select(Agent_AI).where(Agent_AI.model == model))
         if agent is None:
-            agent = AuthorFactory.create('agent', model=model)
+            agent = Agent_AI()
+            agent.model = model
             db.session.add(agent)
             db.session.flush()
         return agent

@@ -4,6 +4,7 @@ from flask import Flask
 
 from tp2_is1.config import config
 from tp2_is1.extensions import db
+from flask import redirect, url_for
 
 
 def create_app(enviroment='development'):
@@ -30,6 +31,9 @@ def create_app(enviroment='development'):
     app.register_blueprint(auth_bp)
     app.register_blueprint(question_bp)
 
+    @app.get('/')
+    def home():
+        return redirect(url_for('questions.index'))
     return app
 
 
