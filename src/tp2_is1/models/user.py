@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from tp2_is1.extensions import db
 from tp2_is1.models.author import Author
 
@@ -19,6 +21,6 @@ class User(Author):
         self.lastname = lastname
 
 
-    __mapper_args__ = {
+    __mapper_args__: ClassVar[dict] = {
         'polymorphic_identity': 'user'
     }

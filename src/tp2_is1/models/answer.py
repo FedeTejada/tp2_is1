@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from tp2_is1.extensions import db
 
@@ -8,7 +8,7 @@ class Answer(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
+    date = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(UTC))
     is_accepted = db.Column(db.Boolean, nullable=False, default=False)
 
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)

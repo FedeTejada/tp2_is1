@@ -1,4 +1,5 @@
 from flask import Blueprint
+
 ## API REST
 #GET    /users
 #GET    /users/<id>

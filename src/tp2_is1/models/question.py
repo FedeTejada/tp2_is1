@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from tp2_is1.extensions import db
 from tp2_is1.models.tag import question_tags
@@ -10,7 +10,7 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     body = db.Column(db.Text, nullable=False)  # texto enriquecido
-    date = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
+    date = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(UTC))
 
     # Un usuario (humano) realiza 0..* preguntas
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

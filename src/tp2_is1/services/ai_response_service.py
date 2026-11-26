@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from tp2_is1.extensions import db
 from tp2_is1.models.answer import Answer
@@ -25,10 +25,10 @@ class AIResponseService:
             return False
         if AI_TAG in question.tag_names:
             return True
-        now = now or datetime.now(timezone.utc)
+        now = now or datetime.now(UTC)
         date = question.date
         if date.tzinfo is None:
-            date = date.replace(tzinfo=timezone.utc)
+            date = date.replace(tzinfo=UTC)
         return now - date >= self.unanswered_after
 
     def generate_answer(self, question: Question) -> Answer:

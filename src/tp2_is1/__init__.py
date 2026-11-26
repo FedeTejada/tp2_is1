@@ -1,7 +1,10 @@
 import os
+
+from flask import Flask
+
 from tp2_is1.config import config
 from tp2_is1.extensions import db
-from flask import Flask
+
 
 def create_app(enviroment='development'):
     app = Flask(__name__,instance_relative_config=True)
@@ -20,9 +23,9 @@ def create_app(enviroment='development'):
         db.create_all()  # provisorio hasta tener migraciones Alembic
 
     #Routes
-    from .routes.users import user_bp
     from .routes.auth import auth_bp
     from .routes.questions import question_bp
+    from .routes.users import user_bp
     app.register_blueprint(user_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(question_bp)

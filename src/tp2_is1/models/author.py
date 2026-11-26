@@ -1,4 +1,7 @@
+from typing import ClassVar
+
 from tp2_is1.extensions import db
+
 
 class Author(db.Model):
     __tablename__ = "author"
@@ -6,7 +9,7 @@ class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(20), nullable=False)
 
-    __mapper_args__ = {
+    __mapper_args__: ClassVar[dict] = {
         "polymorphic_on": type,
         "polymorphic_identity": "author"
     }

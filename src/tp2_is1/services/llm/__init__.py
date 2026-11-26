@@ -1,8 +1,8 @@
-from tp2_is1.services.llm.strategy import Strategy
-from tp2_is1.services.llm.openai_strategy import OpenAIStrategy
 from tp2_is1.services.llm.gemini_strategy import GeminiStrategy
+from tp2_is1.services.llm.openai_strategy import OpenAIStrategy
+from tp2_is1.services.llm.strategy import Strategy
 
-__all__ = ["Strategy", "OpenAIStrategy", "GeminiStrategy", "strategy_from_config"]
+__all__ = ["GeminiStrategy", "OpenAIStrategy", "Strategy", "strategy_from_config"]
 
 
 def strategy_from_config(cfg) -> Strategy:
