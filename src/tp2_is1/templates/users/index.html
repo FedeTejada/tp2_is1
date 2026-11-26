@@ -18,6 +18,17 @@
         </span>
     </div>
 
+    <div class="user-actions">
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Agregar usuario</a>
+        <a href="{{ url_for('questions.index') }}" class="btn btn-secondary">Ir a preguntas</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
     {% if users %}
 
         <div class="users-grid">
@@ -27,7 +38,7 @@
                 <article class="user-card">
 
                     <div class="user-avatar">
-                        {{ user.name[0]|upper }}{{ user.lastname[0]|upper }}
+                        {{ user.name[:1]|upper }}{{ user.lastname[:1]|upper }}
                     </div>
 
                     <div class="user-info">

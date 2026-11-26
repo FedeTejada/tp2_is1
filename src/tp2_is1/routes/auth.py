@@ -39,6 +39,5 @@ def reg_date():
     add_user(user)
 
 
-    print(user.id, user.email, user.name, user.lastname)
-    print(len(users))
-    return redirect(url_for('auth.register'))
+    flash(f'Usuario @{user.username} creado correctamente', 'success')
+    return redirect(url_for('users.index'))

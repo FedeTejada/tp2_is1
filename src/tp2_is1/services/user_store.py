@@ -1,54 +1,29 @@
+"""Acceso a usuarios sobre la base de datos.
+
+Mantiene la misma interfaz que la versión en memoria (get_all_users, add_user, ...)
+para que las rutas de /users y /auth no cambien, pero ahora los usuarios se
+guardan en la BD y por lo tanto también están disponibles en /questions.
+"""
+from tp2_is1.extensions import db
+from tp2_is1.models.answer import Answer
+from tp2_is1.models.question import Question
 from tp2_is1.models.user import User
-
-users = [
-    User('lucia.gomez@example.com', 'secreto123', 'Lucía', 'luciag', 'Gómez'),
-    User('carlos.perez@example.com', 'clave456', 'Carlos', 'cperez', 'Pérez'),
-    User('sofia.martinez@example.com', 'pass789', 'Sofía', 'smartinez', 'Martínez'),
-    User('mateo.rodriguez@example.com', 'pass123', 'Mateo', 'mrod', 'Rodríguez'),
-    User('valentina.lopez@example.com', 'pass321', 'Valentina', 'valen_l', 'López'),
-    User('alejandro.garcia@example.com', 'pass456', 'Alejandro', 'alejandro_g', 'García'),
-    User('camila.fernandez@example.com', 'pass789', 'Camila', 'camif', 'Fernández'),
-    User('joaquin.diaz@example.com', 'pass111', 'Joaquín', 'jdiaz', 'Díaz'),
-    User('martina.torres@example.com', 'pass222', 'Martina', 'martutorres', 'Torres'),
-    User('lucas.ruiz@example.com', 'pass333', 'Lucas', 'lruiz', 'Ruiz'),
-    User('florencia.alvarez@example.com', 'pass444', 'Florencia', 'flor_alvarez', ''),
-    User('tomas.moreno@example.com', 'pass555', 'Tomás', 'tmoreno', 'Moreno'),
-    User('agustina.jimenez@example.com', 'pass666', 'Agustina', 'agus_jimenez', 'Jiménez'),
-    User('nicolas.ruiz@example.com', 'pass777', 'Nicolás', 'nico_ruiz', 'Ruiz'),
-    User('victoria.castro@example.com', 'pass888', 'Victoria', 'vicky_c', 'Castro'),
-    User('benjamin.romero@example.com', 'pass999', 'Benjamín', 'benja_romero', 'Romero'),
-    User('catalina.sosa@example.com', 'pass101', 'Catalina', 'catasosa', 'Sosa'),
-    User('lautaro.acosta@example.com', 'pass202', 'Lautaro', 'laucha_a', 'Acosta'),
-    User('julieta.medina@example.com', 'pass303', 'Julieta', 'julietam', 'Medina'),
-    User('franco.flores@example.com', 'pass404', 'Franco', 'fflores', 'Flores'),
-    User('micaela.ortiz@example.com', 'pass505', 'Micaela', 'mily_ortiz', 'Ortiz'),
-    User('ignacio.silva@example.com', 'pass606', 'Ignacio', 'nacho_silva', 'Silva')
-]
-
-
-next_user_id = 0
 
 
 def add_user(user):
-    global next_user_id
-
-    user.id = next_user_id
-    users.append(user)
-
-    next_user_id += 1
-
+    db.session.add(user)
+    db.session.commit()
     return user
 
 
 def get_all_users():
-    return users
+    return db.session.scalars(db.select(User).order_by(User.username)).all()
 
 
 def get_user_by_id(user_id):
-    return next(
-        (user for user in users if user.id == user_id),
-        None
-    )
+    return db.session.get(User, user_id)
+
+
 def update_user(user_id, data):
     user = get_user_by_id(user_id)
 
@@ -58,6 +33,7 @@ def update_user(user_id, data):
     for field, value in data.items():
         setattr(user, field, value)
 
+    db.session.commit()
     return user
 
 
@@ -67,5 +43,15 @@ def delete_user(user_id):
     if user is None:
         return False
 
-    users.remove(user)
+    has_questions = db.session.scalar(
+        db.select(Question.id).where(Question.user_id == user_id).limit(1)
+    )
+    has_answers = db.session.scalar(
+        db.select(Answer.id).where(Answer.author_id == user_id).limit(1)
+    )
+    if has_questions or has_answers:
+        raise ValueError("No se puede eliminar un usuario que tiene preguntas o respuestas")
+
+    db.session.delete(user)
+    db.session.commit()
     return True

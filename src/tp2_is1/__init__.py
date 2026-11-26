@@ -1,10 +1,9 @@
 import os
 
-from flask import Flask
+from flask import Flask, redirect, url_for
 
 from tp2_is1.config import config
 from tp2_is1.extensions import db
-from flask import redirect, url_for
 
 
 def create_app(enviroment='development'):
@@ -22,6 +21,9 @@ def create_app(enviroment='development'):
     from tp2_is1 import models  # noqa: F401  (registra los modelos en el metadata)
     with app.app_context():
         db.create_all()  # provisorio hasta tener migraciones Alembic
+        if app.config.get('SEED_DEMO_DATA'):
+            from tp2_is1.services.seed import seed_demo_data
+            seed_demo_data()
 
     #Routes
     from .routes.auth import auth_bp

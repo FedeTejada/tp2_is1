@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Nueva pregunta{% endblock %}
 {% block content %}
+<section class="users-section">
 <h1>Nueva pregunta</h1>
-<form method="post" action="{{ url_for('questions.create_question') }}">
+<form method="post" class="q-form" action="{{ url_for('questions.create_question') }}">
   <label>Usuario
     <select name="user_id" required>
       {% for u in users %}<option value="{{ u.id }}">@{{ u.username }}</option>{% endfor %}
@@ -18,6 +19,8 @@
   <label>Etiquetas (separadas por coma; usá ia-help para respuesta automática)
     <input type="text" name="tags">
   </label>
-  <button type="submit">Publicar</button>
+  <button type="submit" class="btn btn-primary">Publicar</button>
 </form>
+<p><a href="{{ url_for('questions.index') }}">← Volver a preguntas</a> · <a href="{{ url_for('auth.register') }}">¿Falta un usuario? Agregalo</a></p>
+</section>
 {% endblock %}

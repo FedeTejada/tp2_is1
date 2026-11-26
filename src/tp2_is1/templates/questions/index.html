@@ -1,15 +1,39 @@
 {% extends "base.html" %}
 {% block title %}Preguntas | Question & Answer{% endblock %}
 {% block content %}
-<h1>Preguntas</h1>
-<a href="{{ url_for('questions.new_question') }}">Hacer una pregunta</a>
-{% for q in questions %}
-  <article class="answer">
-    <h3><a href="{{ url_for('questions.show_question', id=q.id) }}">{{ q.title }}</a></h3>
-    <p class="meta">{{ q.category.name }} · {{ q.answers|length }} respuestas · {{ q.date.strftime('%d/%m/%Y') }}</p>
-    {% for t in q.tags %}<span class="tag">#{{ t.name }}</span>{% endfor %}
-  </article>
-{% else %}
-  <p>Todavía no hay preguntas.</p>
-{% endfor %}
+<section class="users-section">
+
+  <div class="page-heading">
+    <div>
+      <h1>Preguntas</h1>
+      <p>Preguntá, respondé y aprendé con la comunidad.</p>
+    </div>
+    <span class="users-count">{{ questions|length }} preguntas</span>
+  </div>
+
+  <div class="user-actions">
+    <a href="{{ url_for('questions.new_question') }}" class="btn btn-primary">Hacer una pregunta</a>
+    <a href="{{ url_for('users.index') }}" class="btn btn-secondary">Ver usuarios</a>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-secondary">Agregar usuario</a>
+  </div>
+
+  {% with messages = get_flashed_messages() %}
+    {% for message in messages %}<div class="alert alert-success">{{ message }}</div>{% endfor %}
+  {% endwith %}
+
+  {% for q in questions %}
+    <article class="question-card">
+      <h3><a href="{{ url_for('questions.show_question', id=q.id) }}">{{ q.title }}</a></h3>
+      <p class="meta">{{ q.category.name }} · por @{{ q.user.username }} · {{ q.answers|length }} respuestas · {{ q.date.strftime('%d/%m/%Y') }}</p>
+      {% for t in q.tags %}<span class="tag">#{{ t.name }}</span>{% endfor %}
+    </article>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">?</div>
+      <h2>Todavía no hay preguntas</h2>
+      <p>Sé el primero en preguntar.</p>
+    </div>
+  {% endfor %}
+
+</section>
 {% endblock %}

@@ -65,7 +65,10 @@ def edit_user(id):
 ## Recibimos una solicitud desde el front con el metodo delete al endpoint declarado, verificamos que este el usuario a eliminar, si esta lo borramos y si no arrojamos un error usuario invalido
 @user_bp.delete('/<int:id>')
 def delete_user_route(id):
-    deleted = delete_user(id)
+    try:
+        deleted = delete_user(id)
+    except ValueError as error:
+        return {"error": str(error)}, 409
     if not deleted:
         return {"error": "Usuario no encontrado"}, 404
     return {

@@ -10,6 +10,9 @@ class Config:
     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
     GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
 
+    # Carga usuarios y categorías de prueba si la base está vacía
+    SEED_DEMO_DATA = False
+
     @staticmethod
     def init_app(app):
         pass
@@ -17,6 +20,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    SEED_DEMO_DATA = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite3'
 
 

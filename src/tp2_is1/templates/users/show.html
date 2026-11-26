@@ -9,7 +9,7 @@
 
     <div class="user-card">
         <div class="user-avatar">
-            {{ user.name[0]|upper }}{{ user.lastname[0]|upper }}
+            {{ user.name[:1]|upper }}{{ user.lastname[:1]|upper }}
         </div>
 
         <div class="user-info">
@@ -19,10 +19,21 @@
         </div>
     </div>
 
-    <a href="{{ url_for('users.index') }}" class="profile-link">
-        ← Volver a usuarios
-    </a>
-
+    <div class="user-actions">
+        <a href="{{ url_for('users.edit_user', id=user.id) }}" class="btn btn-primary">
+            Editar usuario
+        </a>
+        <button type="button" id="delete-user-btn" data-user-id="{{ user.id }}" class="btn btn-danger">
+            Eliminar usuario
+        </button>
+        <a href="{{ url_for('users.index') }}" class="btn btn-secondary">
+        Volver atrás
+        </a>
+    </div>
 </section>
 
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/users.js') }}"></script>
 {% endblock %}

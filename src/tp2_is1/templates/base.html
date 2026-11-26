@@ -19,9 +19,11 @@
                 <span>Question<span class="brand-highlight">&</span>Answer</span>
             </a>
 
-            <span class="navbar-tagline">
-                Una comunidad para aprender
-            </span>
+            <nav class="nav-links">
+                <a href="{{ url_for('questions.index') }}">Preguntas</a>
+                <a href="{{ url_for('users.index') }}">Usuarios</a>
+                <a href="{{ url_for('auth.register') }}" class="nav-cta">+ Agregar usuario</a>
+            </nav>
         </div>
     </header>
 
