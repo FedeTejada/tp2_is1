@@ -34,7 +34,10 @@ class AIResponseService:
     def generate_answer(self, question: Question) -> Answer:
         text = self._strategy.generate_response(question)
         author = AuthorFactory.get_or_create_agent(self._strategy.model)
-        answer = Answer(body=text, question=question, author=author)
+        answer = Answer()
+        answer.body = text
+        setattr(answer, 'question', question)
+        setattr(answer, 'author', author)
         db.session.add(answer)
         db.session.commit()
         return answer

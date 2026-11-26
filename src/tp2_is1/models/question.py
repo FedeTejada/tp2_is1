@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+from typing import cast
 
 from tp2_is1.extensions import db
 from tp2_is1.models.tag import question_tags
@@ -29,11 +30,11 @@ class Question(db.Model):
 
     @property
     def tag_names(self):
-        return {t.name for t in self.tags}
+        return {t.name for t in cast(list, self.tags)}
 
     @property
     def accepted_answer(self):
-        return next((a for a in self.answers if a.is_accepted), None)
+        return next((a for a in cast(list, self.answers) if a.is_accepted), None)
 
     def __repr__(self):
         return f"<Question {self.id} {self.title!r}>"
